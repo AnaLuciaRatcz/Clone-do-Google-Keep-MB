@@ -5,18 +5,18 @@ const addNoteBtn = document.querySelector(".add-note");
 
 //Funções
 function showNotes(){ //exibir as notas na área de trabalho
-    cleanNotes();
+    cleanNotes(); //limpar a lista de notas
 
     getNotes().forEach((note) => { //receber a lista de notas
 
         const noteElement = createNote(note.id, note.content, note.fixed); //criar o elemento na dom a partir dos dados recebidos do objeto
         
-        notesContainer.appendChild(noteElement);
+        notesContainer.appendChild(noteElement); //adicionar dentro da listagem
     });
 }
 
 function cleanNotes(){
-    notesContainer.replaceChildren([]);
+    notesContainer.replaceChildren([]); //limpar todas as notas
 }
 
 function addNote(){ //ativar o botão de adicionar nota
@@ -35,7 +35,7 @@ function addNote(){ //ativar o botão de adicionar nota
 
     notes.push(noteObject); //adicionar nota nova
 
-    saveNotes (notes); // função que vai receber as notas, salvas as notas
+    saveNotes (notes); // função que vai receber as notas, salva as notas
 
     noteInput.value = ""; //limpar o campo do input depois que a nota já foi adicionada
 }
@@ -77,7 +77,6 @@ function createNote(id, content, fixed){ //criar o elemento "nota"
     element.appendChild(duplicateIcon); //os ícones já vão aparecer
 
 
-
     if(fixed){// fazer aparecer que a nota está fixada
         element.classList.add("fixed"); //adiciona a classe fixada
     }
@@ -95,7 +94,7 @@ function createNote(id, content, fixed){ //criar o elemento "nota"
         copyNote(id);
     });
 
-    return element; //??????????
+    return element; 
 }; 
 
 function toggleFixNote(id){ //alterar o fixa ou desfixa no local storage também
@@ -146,14 +145,14 @@ function copyNote(id){ //função para ativar duplicar notas
 
 function getNotes() { //pegar as notas que estão no local storage
 
-    const notes = JSON.parse(localStorage.getItem("notes"));
+    const notes = JSON.parse(localStorage.getItem("notes") || "[]"); // || = or/ou
 
     const orderedNotes = notes.sort((a,b) => (a.fixed > b.fixed ? -1 : 1)); //colocar as notas fixadas primeiro das não fixadas
 
-    return orderedNotes || []; 
+    return orderedNotes;
 }
 function saveNotes(notes){ //salvar as notas no localStorage
-    localStorage.setItem("notes", JSON.stringify(notes) || "[]"); //??????????????? o || "[]" serve para pegar um array vazio, pra não começar vazio
+    localStorage.setItem("notes", JSON.stringify(notes) || "[]"); // o || "[]" serve para pegar um array vazio, pra não começar vazio
     
     return notes;
 }
@@ -163,3 +162,4 @@ addNoteBtn.addEventListener("click", () => addNote()); //ativar o botão de adic
 
 //Inicialização
 showNotes();
+
